@@ -19,12 +19,22 @@ const LoginScreen = ({ navigation }: any) => {
 
 
   const handleLoginWithEmail = async () => {
-    if(!email ||  !password ){
+    if (!email || !password) {
       setErrorText('Email and password are not protected!')
-    }else{
+    } else {
       setErrorText("")
       setIsLoading(true)
-     
+      await auth().signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          setIsLoading(false)
+          const user = userCredential.user
+          console.log(user)
+        })
+        .catch((err: any) => {
+          setIsLoading(false)
+          setErrorText(err.message)
+        })
+
     }
   }
 
@@ -57,7 +67,7 @@ const LoginScreen = ({ navigation }: any) => {
               Height={90}
               isPassword
               title='Passwrod' />
-              <TextComponent text={errorText} styles={{marginVertical:10,marginStart:10}} size={14} color='crimson'/>
+            <TextComponent text={errorText} styles={{ marginVertical: 10, marginStart: 10 }} size={14} color='crimson' />
           </View>
           <View style={{ marginVertical: 20, flex: 1 }}>
             <ButtonComponent onPress={handleLoginWithEmail} flex={0} text='Login' textColor='black' marginHorizontal={60} backGroupColor='rgba(33,150,243,0.5)' />
@@ -70,18 +80,18 @@ const LoginScreen = ({ navigation }: any) => {
 
           <Modal visible={isLoading} transparent animationType='slide'   >
             <View style={styles.viewModal} >
-            <Progress.Circle
-              size={70}
-              indeterminate={true}
-              color='white'
-              borderWidth={3}
-              textStyle={{ color: 'black' }} 
-              endAngle={0.6}
-              allowFontScaling
+              <Progress.Circle
+                size={70}
+                indeterminate={true}
+                color='white'
+                borderWidth={3}
+                textStyle={{ color: 'black' }}
+                endAngle={0.6}
+                allowFontScaling
               />
-              
+
             </View>
-           
+
           </Modal>
 
 
@@ -103,8 +113,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-end',
   },
-  viewModal:{
-     flex:1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)'
+  viewModal: {
+    flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.2)'
   }
 });
 

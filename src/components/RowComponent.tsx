@@ -1,7 +1,7 @@
 import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
 import React, { ReactNode } from 'react';
 import { globalStyle } from '../styles/globalStyle';
-import TextComponent from '../../node_modules/react-native-android8-component/src/component/TextView'
+
 
 interface Props {
   children?: ReactNode;

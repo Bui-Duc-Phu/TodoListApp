@@ -5,17 +5,18 @@ import RowComponent from '../components/RowComponent'
 import SectionComponent from '../components/SectionComponent'
 import { globalStyle } from '../styles/globalStyle'
 
-import { Add, Edit2, Element4, Notification, SearchNormal1 } from 'iconsax-react-native'
+import { Add, Edit2, Element4, Login, Logout, Notification, SearchNormal1 } from 'iconsax-react-native'
 import CardComponent from '../components/CardComponent'
 import TextComponent from '../components/TextComponent'
 import { appColor } from '../constants/colors'
 import TagComponent from '../components/TagComponent'
 import SpaceComponent from '../components/SpaceComponent'
 import CircularComponent from '../components/CircularComponent'
-import { Text } from 'react-native-svg'
+
 import CardImageComponent from '../components/CardImageComponent'
 import ArvatarGroup from '../components/ArvatarGroup'
 import ProgressBarComponent from '../components/ProgressBarComponent'
+import auth from '@react-native-firebase/auth'
 
 const HomeScreen = ({navigation} :  any) => {
     return (
@@ -30,7 +31,9 @@ const HomeScreen = ({navigation} :  any) => {
                     </RowComponent>
                 </SectionComponent>
 
-                <SectionComponent >
+                <RowComponent >
+                    <View style={{flex:1}}>
+                    <SectionComponent >
                     <RowComponent justify='flex-start'>
                         <TextComponent text='He,Duc Phu' font='bold' bold={true} />
                     </RowComponent>
@@ -38,9 +41,17 @@ const HomeScreen = ({navigation} :  any) => {
 
                 <SectionComponent >
                     <RowComponent justify='flex-start'>
-                        <TextComponent text='Be Productive Today' size={24} bold={true} />
+                        <TextComponent text='Be Productive Today' size={20} bold={true} />
                     </RowComponent>
                 </SectionComponent>
+                    </View>
+                  <TouchableOpacity style={{marginEnd:20}} onPress={async () => auth().signOut()}>
+                    <Logout size={24} color='darkred'/>
+                  </TouchableOpacity>
+
+                </RowComponent>
+
+                
 
                 <SectionComponent >
                     <RowComponent styles={

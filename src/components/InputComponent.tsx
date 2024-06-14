@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, { ReactNode, useState } from 'react'
+import React, { ForwardedRef, ReactNode, useState } from 'react'
 import TextComponent from './TextComponent'
 import RowComponent from './RowComponent'
 import { globalStyle } from '../styles/globalStyle'
@@ -19,10 +19,11 @@ interface Props {
   flex_start?: boolean
   isPassword?: boolean
   Height?:number
+
 }
 
 const InputComponent = (props: Props) => {
-  const { value, isPassword, onChange, placeholder, title, prefix, affix, allowClear, multiLines, numberOfLines, flex_start,Height } = props
+  const { value, isPassword, onChange,placeholder, title, prefix, affix, allowClear, multiLines, numberOfLines, flex_start,Height } = props
   const [isShowPassword, setIsShowPassword] = useState(false);
   return (
     <View style={{ padding: 0 ,height:Height ?? undefined}}>
@@ -47,15 +48,13 @@ const InputComponent = (props: Props) => {
             style={{ color: 'black', margin: 0,padding: 3, flex: 1, textAlignVertical: flex_start ? 'top' : 'center' }}
             secureTextEntry={isPassword ? !isShowPassword : false}
             autoCapitalize='none'
-       
-           
-            
-
+            autoCorrect={false}
+      
           />
         </View>
         {affix && affix}
         {allowClear && value &&
-          <TouchableOpacity onPress={() => onChange('')} >
+          <TouchableOpacity onPress={() => onChange('')}  >
             <AntDesign name='close' color={'black'} size={24} />
           </TouchableOpacity>}
 

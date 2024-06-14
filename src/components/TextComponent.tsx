@@ -24,7 +24,8 @@ const TextComponent = (props: Props) => {
             fontSize: size ?? 16,
             color: color ?? 'black',
             ...(bold && { fontWeight: 'bold' }),
-            textTransform : uppercase ? 'uppercase' : undefined
+            textTransform : uppercase ? 'uppercase' : undefined,
+            
         }, styles]}>{text}</Text>
     );
 }

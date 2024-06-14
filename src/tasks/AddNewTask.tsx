@@ -1,5 +1,5 @@
 import { View, Text, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TaskModel } from '../models/taskModel'
 import Container from '../components/Container'
 import SectionComponent from '../components/SectionComponent'
@@ -9,6 +9,9 @@ import DateTimePickerComponent from '../components/DateTimePickerComponent'
 import ButtonComponent from '../components/ButtonComponent'
 import RowComponent from '../components/RowComponent'
 import SpaceComponent from '../components/SpaceComponent'
+import DropdownPicker from '../components/DropdownPicker'
+import firestore from '@react-native-firebase/firestore'
+import { SelectModel } from '../models/SelectModel'
 
 
 
@@ -24,19 +27,45 @@ const initValue: TaskModel = {
 
 const AddNewTask = ({ navigation }: any) => {
 
-  const [taskDetail, settaskDetail] = useState<TaskModel>(initValue);
 
-  const handelChangeValue = (id: string, value: string | Date) => {
+
+  const [taskDetail, settaskDetail] = useState<TaskModel>(initValue);
+  const [usersSelect, setUsersSelect] = useState<SelectModel[]>([]);
+
+  const handelChangeValue = (id: string, value: string |string[] |  Date) => {
     settaskDetail(prevState => ({
       ...prevState,
       [id]: value
     }));
   }
 
-
   const hendelAddNewTask = async () => {
     console.log(taskDetail)
   }
+
+  const handleGetAllUsers = async () => {
+    try {
+      const snapshot = await firestore().collection('users').get();
+      const items: SelectModel[] = snapshot.docs.map(doc => {
+        return {
+          label: doc.data().name, 
+          value: doc.id           
+        };
+      });
+
+      setUsersSelect(items); 
+
+      console.log(items);  
+    } catch (error) {
+      console.error("Error getting documents: ", error); 
+    }
+
+  }
+
+
+  useEffect(() => {
+    handleGetAllUsers()
+  }, [])
 
 
   return (
@@ -79,7 +108,7 @@ const AddNewTask = ({ navigation }: any) => {
               type="time"
             />
           </View>
-          <SpaceComponent width={10}/>
+          <SpaceComponent width={10} />
           <View style={{ flex: 1 }}>
             <DateTimePickerComponent
               selected={taskDetail.end}
@@ -90,6 +119,13 @@ const AddNewTask = ({ navigation }: any) => {
             />
           </View>
         </RowComponent>
+        <DropdownPicker
+          title='Members'
+          selected={taskDetail.uids}
+          items={usersSelect}
+          onSelect={val =>handelChangeValue('uids',val)}
+          multible
+        />
 
 
       </SectionComponent>
